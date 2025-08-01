@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeFlow - Blood Bank Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>LifeFlow</h1>
+            <p>Connecting donors with recipients</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Find Blood</a></li>
+                <li><a href="#">Donate</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li class="auth-buttons">
+                    <a href="login.html" class="btn-login">Login</a>
+                    <a href="/register.html" class="btn-register">Register</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Every Drop Counts</h2>
+                <p>Join our community of lifesavers. Your donation can save up to 3 lives.</p>
+                <div class="hero-buttons">
+                    <a href="/donate" class="btn-donate">Become a Donor</a>
+                    <a href="/request" class="btn-request">Request Blood</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="blood-types">
+            <h3>Current Blood Availability</h3>
+            <div class="blood-grid">
+                <div class="blood-type a-positive">
+                    <span>A+</span>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="blood-type a-negative">
+                    <span>A-</span>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="blood-type b-positive">
+                    <span>B+</span>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="blood-type b-negative">
+                    <span>B-</span>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="blood-type ab-positive">
+                    <span>AB+</span>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="blood-type ab-negative">
+                    <span>AB-</span>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="blood-type o-positive">
+                    <span>O+</span>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="blood-type o-negative">
+                    <span>O-</span>
+                    <div class="status-indicator"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <i class="fas fa-heartbeat"></i>
+                <h4>Easy Donation</h4>
+                <p>Schedule your blood donation at your convenience with our simple process.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-search-location"></i>
+                <h4>Find Blood Fast</h4>
+                <p>Locate available blood types in your area with our real-time tracking.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h4>Safe & Secure</h4>
+                <p>Your data is protected with our advanced security measures.</p>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-item">
+                <h5>10,000+</h5>
+                <p>Lives Saved</p>
+            </div>
+            <div class="stat-item">
+                <h5>5,000+</h5>
+                <p>Active Donors</p>
+            </div>
+            <div class="stat-item">
+                <h5>200+</h5>
+                <p>Hospitals Partnered</p>
+            </div>
+            <div class="stat-item">
+                <h5>24/7</h5>
+                <p>Emergency Support</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h6>About LifeFlow</h6>
+                <p>We connect blood donors with recipients in emergency situations across the country.</p>
+            </div>
+            <div class="footer-section links">
+                <h6>Quick Links</h6>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Donate Blood</a></li>
+                    <li><a href="#">Request Blood</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section contact">
+                <h6>Contact Us</h6>
+                <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                <p><i class="fas fa-envelope"></i> contact@lifeflow.org</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 LifeFlow Blood Bank. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
