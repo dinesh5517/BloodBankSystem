@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile - LifeFlow</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .profile-container {
+      max-width: 500px;
+      margin: auto;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      position: relative;
+    }
+
+    .profile-container h3 {
+      font-weight: 600;
+      margin-bottom: 25px;
+      color: #333;
+      text-align: center;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background-color: #0d6efd;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #084298;
+    }
+
+    .form-control:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 0.9rem;
+      padding: 4px 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="profile-container">
+      <a href="userhome.html" class="btn btn-outline-secondary back-button">← Back to Home</a>
+      <h3>Update Profile</h3>
+      <form id="profile-form">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" id="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email (readonly)</label>
+          <input type="email" id="email" class="form-control" disabled>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Phone</label>
+          <input type="text" id="phone" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Blood Group</label>
+          <input type="text" id="bloodGroup" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">City</label>
+          <input type="text" id="city" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Update</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('token');
+
+    async function loadProfile() {
+      const res = await fetch('/api/user/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      document.getElementById('name').value = data.name || '';
+      document.getElementById('email').value = data.email || '';
+      document.getElementById('phone').value = data.phone || '';
+      document.getElementById('bloodGroup').value = data.bloodGroup || '';
+      document.getElementById('city').value = data.city || '';
+    }
+
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const updatedData = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        bloodGroup: document.getElementById('bloodGroup').value,
+        city: document.getElementById('city').value,
+      };
+
+      const res = await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(updatedData)
+      });
+
+      if (res.ok) {
+        alert('✅ Profile updated successfully!');
+      } else {
+        alert('❌ Update failed!');
+      }
+    });
+
+    window.onload = loadProfile;
+  </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LifeFlow - Donation History</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #e63946;
+      --secondary: #1d3557;
+      --light: #f1faee;
+      --white: #ffffff;
+      --blue: #457b9d;
+    }
+
+    body {
+      background-color: var(--light);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar {
+      background: linear-gradient(to right, var(--primary), var(--blue));
+    }
+
+    .navbar-brand, .nav-link {
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .container {
+      margin-top: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--secondary);
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background-color: var(--white);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+
+    .btn-back {
+      margin-top: 20px;
+      background-color: var(--blue);
+      color: white;
+    }
+
+    .btn-back:hover {
+      background-color: var(--secondary);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg px-3">
+    <a class="navbar-brand" href="#">LifeFlow Blood Bank</a>
+  </nav>
+
+  <div class="container">
+    <h2>🩸 Your Donation History</h2>
+    <div id="history-container">
+      <!-- Donation cards will be inserted here -->
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-back" onclick="location.href='userhome.html'">⬅ Back to Home</button>
+    </div>
+  </div>
+
+  <script>
+  const token = localStorage.getItem("token");
+
+  async function fetchDonationHistory() {
+    try {
+      const response = await fetch('/api/donation/history', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+      const container = document.getElementById('history-container');
+
+      if (data.length === 0) {
+        container.innerHTML = `<p class="text-center text-muted">No donation history found.</p>`;
+        return;
+      }
+
+      data.forEach(entry => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <h5>Date: ${new Date(entry.date).toLocaleDateString()}</h5>
+          <p><strong>City:</strong> ${entry.city}</p>
+          <p><strong>Center:</strong> ${entry.center}</p>
+          <p><strong>Status:</strong> ${entry.status || 'Scheduled'}</p>
+        `;
+        container.appendChild(card);
+      });
+
+    } catch (err) {
+      console.error('Failed to fetch donation history:', err);
+      document.getElementById('history-container').innerHTML = `<p class="text-danger text-center">Something went wrong!</p>`;
+    }
+  }
+
+  fetchDonationHistory();
+</script>
+
+</body>
+</html>

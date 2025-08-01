@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LifeFlow - Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #e63946;
+      --secondary: #1d3557;
+      --light: #f1faee;
+      --white: #ffffff;
+      --blue: #457b9d;
+    }
+
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--light);
+      color: var(--secondary);
+    }
+
+    .navbar {
+      background: linear-gradient(to right, var(--primary), var(--blue));
+      padding: 1rem 2rem;
+    }
+
+    .navbar-brand, .nav-link {
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .navbar .nav-link:hover {
+      color: #fffacd !important;
+    }
+
+    .dashboard-header {
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+
+    .dashboard-header h2 {
+      color: var(--secondary);
+    }
+
+    .dashboard-header p {
+      color: #555;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s;
+      border: none;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: var(--secondary);
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #555;
+      flex-grow: 1;
+    }
+
+    .card button {
+      margin-top: 10px;
+      background-color: var(--primary);
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .card button:hover {
+      background-color: #c1121f;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">LifeFlow Admin</a>
+      <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="#" id="logout-btn">🚪 Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-header">
+    <h2>Admin Dashboard</h2>
+    <p>Manage system data and monitor activities</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>👥 View Users</h3>
+      <p>Manage registered users (edit/delete).</p>
+      <button onclick="location.href='admin-users.html'">Manage</button>
+    </div>
+    <div class="card">
+      <h3>🩸 Blood Requests</h3>
+      <p>Review and monitor all blood requests.</p>
+      <button onclick="location.href='admin-requests.html'">View</button>
+    </div>
+    <div class="card">
+      <h3>📅 Scheduled Donations</h3>
+      <p>See who booked donation slots and when.</p>
+      <button onclick="location.href='admin-donations.html'">Check</button>
+    </div>
+    <div class="card">
+      <h3>📦 Blood Inventory</h3>
+      <p>Manage blood stock availability (future).</p>
+      <button onclick="location.href='admin-stock.html'">View</button>
+    </div>
+    <div class="card">
+      <h3>🔔 Notifications</h3>
+      <p>Send alerts to users and donors.</p>
+      <button onclick="location.href='admin-notifications.html'">Send</button>
+    </div>
+    <div class="card">
+      <h3>📊 Reports</h3>
+      <p>View usage reports and stats.</p>
+      <button onclick="location.href='admin-reports.html'">View</button>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('token');
+      const role = localStorage.getItem('userRole');
+      
+      if (!token || role !== 'admin') {
+        localStorage.clear();
+        window.location.href = 'login.html';
+        return;
+      }
+
+      document.getElementById('logout-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

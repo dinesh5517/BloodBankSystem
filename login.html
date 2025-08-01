@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LifeFlow Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #f0f6fc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      border: 2px solid #e74c3c;
+    }
+
+    .title {
+      text-align: center;
+      color: #e74c3c;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .toggle-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .toggle {
+      padding: 10px 20px;
+      border: 1px solid #ccc;
+      background: #f5f5f5;
+      color: #333;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .toggle.active {
+      background-color: #e74c3c;
+      color: white;
+      border-color: #e74c3c;
+    }
+
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .form-section.hidden {
+      display: none;
+    }
+
+    .form-section input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: border 0.3s ease;
+    }
+
+    .form-section input:focus {
+      border-color: #e74c3c;
+      outline: none;
+    }
+
+    .submit-btn {
+      padding: 12px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #c0392b;
+    }
+
+    .submit-btn:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .form-links {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .form-links a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .form-links a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <h2 class="title">LifeFlow Login</h2>
+
+      <div class="toggle-buttons">
+        <button id="adminBtn" class="toggle active">Admin Login</button>
+        <button id="userBtn" class="toggle">User Login</button>
+      </div>
+
+      <!-- Admin Login -->
+      <form id="adminLogin" class="form-section">
+        <input type="email" id="adminEmail" placeholder="Admin Email" required />
+        <input type="password" id="adminPassword" placeholder="Password" required />
+        <div id="adminError" class="error-message"></div>
+        <button type="submit" class="submit-btn" id="adminSubmit">
+          <span id="adminLoading" class="loading" style="display: none;"></span>
+          Login
+        </button>
+      </form>
+
+      <!-- User Login -->
+      <form id="userLogin" class="form-section hidden">
+        <input type="email" id="userEmail" placeholder="Email" required />
+        <input type="password" id="userPassword" placeholder="Password" required />
+        <div id="userError" class="error-message"></div>
+
+        <div class="form-links">
+          <a href="forgotpassword.html">Forgot Password?</a>
+          <span> | </span>
+          <a href="register.html">Register</a>
+        </div>
+
+        <button type="submit" class="submit-btn" id="userSubmit">
+          <span id="userLoading" class="loading" style="display: none;"></span>
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const adminBtn = document.getElementById('adminBtn');
+    const userBtn = document.getElementById('userBtn');
+    const adminForm = document.getElementById('adminLogin');
+    const userForm = document.getElementById('userLogin');
+    const adminSubmit = document.getElementById('adminSubmit');
+    const userSubmit = document.getElementById('userSubmit');
+    const adminLoading = document.getElementById('adminLoading');
+    const userLoading = document.getElementById('userLoading');
+    const adminError = document.getElementById('adminError');
+    const userError = document.getElementById('userError');
+
+    // Toggle between admin and user login
+    adminBtn.addEventListener('click', () => {
+      adminForm.classList.remove('hidden');
+      userForm.classList.add('hidden');
+      adminBtn.classList.add('active');
+      userBtn.classList.remove('active');
+      clearErrors();
+    });
+
+    userBtn.addEventListener('click', () => {
+      userForm.classList.remove('hidden');
+      adminForm.classList.add('hidden');
+      userBtn.classList.add('active');
+      adminBtn.classList.remove('active');
+      clearErrors();
+    });
+
+    function clearErrors() {
+      adminError.style.display = 'none';
+      userError.style.display = 'none';
+    }
+
+    function showError(element, message) {
+      element.textContent = message;
+      element.style.display = 'block';
+    }
+
+    // Admin Login
+    // In login.html - Update both admin and user login handlers
+
+// Admin Login
+adminForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('adminEmail').value.trim();
+  const password = document.getElementById('adminPassword').value.trim();
+
+  try {
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, role: 'admin' })
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userRole', data.role);
+      
+      // Verify role before redirecting
+      if (data.role === 'admin') {
+        window.location.href = 'adminhome.html';
+      } else {
+        throw new Error('User does not have admin privileges');
+      }
+    } else {
+      throw new Error(data.message || 'Login failed');
+    }
+  } catch (error) {
+    console.error('Admin login error:', error);
+    alert(error.message);
+  }
+});
+
+// User Login
+userForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('userEmail').value.trim();
+  const password = document.getElementById('userPassword').value.trim();
+
+  try {
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, role: 'user' })
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userRole', data.role);
+      
+      // Verify role before redirecting
+      if (data.role === 'user') {
+        window.location.href = 'userhome.html';
+      } else {
+        throw new Error('Access restricted to regular users');
+      }
+    } else {
+      throw new Error(data.message || 'Login failed');
+    }
+  } catch (error) {
+    console.error('User login error:', error);
+    alert(error.message);
+  }
+});
+    // Check if already logged in
+    window.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('token');
+      const role = localStorage.getItem('userRole');
+      
+      if (token && role) {
+        // Redirect to appropriate dashboard
+        window.location.href = role === 'admin' ? 'adminhome.html' : 'userhome.html';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LifeFlow - User Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #e63946;
+      --secondary: #1d3557;
+      --light: #f1faee;
+      --white: #ffffff;
+      --blue: #457b9d;
+    }
+
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--light);
+      color: var(--secondary);
+    }
+
+    .navbar {
+      background: linear-gradient(to right, var(--primary), var(--blue));
+      padding: 1rem 2rem;
+    }
+
+    .navbar-brand, .nav-link {
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .navbar .nav-link:hover {
+      color: #fffacd !important;
+    }
+
+    .dashboard-header {
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+
+    .dashboard-header h2 {
+      color: var(--secondary);
+    }
+
+    .dashboard-header p {
+      color: #555;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s;
+      border: none;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: var(--secondary);
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #555;
+      flex-grow: 1;
+    }
+
+    .card button {
+      margin-top: 10px;
+      background-color: var(--primary);
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .card button:hover {
+      background-color: #c1121f;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">LifeFlow Blood Bank</a>
+      <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="#">🏥 Find Donors</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">💉 My Donations</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">📋 My Requests</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="logout-btn">🚪 Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-header">
+    <h2>Dashboard</h2>
+    <p>Manage your blood donations and requests</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>👤 View/Update Profile</h3>
+      <p>Name, contact info, blood group, etc.</p>
+      <button onclick="location.href='profile.html'">Update</button>
+    </div>
+    <div class="card">
+      <h3>🩸 Request Blood</h3>
+      <p>Request form: blood type, location, units.</p>
+      <button onclick="location.href='request.html'">Request</button>
+    </div>
+    <div class="card">
+      <h3>📊 Track Request Status</h3>
+      <p>See updates on your blood requests.</p>
+      <button onclick="location.href='track-requests.html'">Track</button>
+    </div>
+    <div class="card">
+      <h3>🗓️ Schedule Donation</h3>
+      <p>Choose date, preferred center, availability.</p>
+      <button onclick="location.href='schedule.html'">Schedule</button>
+    </div>
+    <div class="card">
+      <h3>✅ Check Eligibility</h3>
+      <p>Show criteria to donate based on health & timing.</p>
+      <button onclick="location.href='eligibility.html'">Check</button>
+    </div>
+    <div class="card">
+      <h3>🔍 Search Blood Availability</h3>
+      <p>Filter by blood group & location.</p>
+      <button onclick="location.href='search.html'">Search</button>
+    </div>
+    <div class="card">
+      <h3>🏆 Donation History</h3>
+      <p>View your past blood donations.</p>
+      <button onclick="location.href='history.html'">View</button>
+    </div>
+    <div class="card">
+      <h3>🔔 Notifications</h3>
+      <p>Get updates on your requests and donations.</p>
+      <button onclick="location.href='notifications.html'">View</button>
+    </div>
+  </div>
+
+ <script>
+    window.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('token');
+      console.log('Current token:', token); // Debugging
+      
+      if (!token) {
+        console.log('No token found, redirecting to login');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        // Verify token with backend
+        const response = await fetch('http://localhost:5000/api/user/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Token verification failed');
+        }
+
+        const userData = await response.json();
+        console.log('User data:', userData); // Debugging
+        
+        // Store user data if needed
+        localStorage.setItem('userEmail', userData.email || '');
+
+      } catch (error) {
+        console.error('Authentication error:', error);
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+      }
+
+      // Logout functionality
+      document.getElementById('logout-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('token');
+        localStorage.removeItem('userEmail');
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
